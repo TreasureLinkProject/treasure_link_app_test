@@ -107,7 +107,7 @@
             <a href="https://apps.apple.com/app/treasurelink/id6746151115" class="store-button" id="appStore">
                 <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/ko-kr?size=250x83&amp;releaseDate=1735171200" alt="Download on the App Store">
             </a>
-            <a href="https://play.google.com/store/apps/details?id=com.wb.treasure_link.stg" class="store-button" id="playStore">
+            <a href="https://play.google.com/store/apps/details?id=com.wb.treasure_link" class="store-button" id="playStore">
                 <img src="https://play.google.com/intl/en_us/badges/static/images/badges/ko_badge_web_generic.png" alt="Get it on Google Play">
             </a>
         </div>
@@ -122,12 +122,11 @@
             // Custom URL scheme
             const appScheme = 'treasurelink://treasurelink.com/';
 
-            // App Store & Play Store URLs
-            // const appStoreUrl = 'https://apps.apple.com/app/treasurelink/id6746151115';
-            const appStoreUrl = 'https://apps.apple.com/app/treasurelink/id6746151115';
-            const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.wb.treasure_link.stg';
-            const androidIntentUrl = `intent://treasurelink.com/#Intent;scheme=treasurelink;package=com.wb.treasure_link.stg;S.browser_fallback_url=${encodeURIComponent(playStoreUrl)};end`;
+            // App Store & Play Store URLs (기본값)
+            const baseAppStoreUrl = 'https://apps.apple.com/app/treasurelink/id6746151115';
+            const basePlayStoreUrl = 'https://play.google.com/store/apps/details?id=com.wb.treasure_link';
 
+    
             // URL 파라미터 파싱
             function getURLParams() {
                 const params = new URLSearchParams(window.location.search);
@@ -214,11 +213,34 @@
                 storeButtons.style.display = 'block';
             }
             
-            function redirectToStore(os) {
+            // UTM 파라미터를 포함한 스토어 URL 생성
+            function buildStoreUrl(os) {
+                const params = getURLParams();
+
                 if (os === 'ios') {
-                    window.location.href = appStoreUrl;
+                    return baseAppStoreUrl;
                 } else if (os === 'android') {
-                    window.location.href = playStoreUrl;
+                    // Play Store referrer 파라미터 생성
+                    const referrerParams = [];
+                    if (params.source) referrerParams.push(`utm_source=${encodeURIComponent(params.source)}`);
+                    if (params.campaign) referrerParams.push(`utm_campaign=${encodeURIComponent(params.campaign)}`);
+                    if (params.medium) referrerParams.push(`utm_medium=${encodeURIComponent(params.medium)}`);
+                    if (params.term) referrerParams.push(`utm_term=${encodeURIComponent(params.term)}`);
+                    if (params.click_id) referrerParams.push(`click_id=${encodeURIComponent(params.click_id)}`);
+
+                    if (referrerParams.length > 0) {
+                        const referrerString = referrerParams.join('&');
+                        return `${basePlayStoreUrl}&referrer=${encodeURIComponent(referrerString)}`;
+                    }
+                    return basePlayStoreUrl;
+                }
+                return null;
+            }
+
+            function redirectToStore(os) {
+                const storeUrl = buildStoreUrl(os);
+                if (storeUrl) {
+                    window.location.href = storeUrl;
                 }
             }
             
@@ -227,40 +249,43 @@
                     showStoreButtons('모바일 기기에서 접속해주세요');
                     return;
                 }
-                
+
                 const loadingText = document.getElementById('loadingText');
                 const storeButtons = document.getElementById('storeButtons');
                 let appOpened = false;
-                
+
                 loadingText.textContent = trigger === 'auto' ? '앱을 여는 중입니다...' : '앱 실행을 다시 시도하는 중입니다...';
                 loadingText.style.display = 'block';
                 storeButtons.style.display = 'none';
-                
+
                 const handleVisibilityChange = function() {
                     if (document.hidden) {
                         appOpened = true;
                         cleanup();
                     }
                 };
-                
+
                 const cleanup = function() {
                     document.removeEventListener('visibilitychange', handleVisibilityChange);
                     clearTimeout(fallbackTimer);
                 };
-                
+
                 document.addEventListener('visibilitychange', handleVisibilityChange);
-                
+
                 const fallbackTimer = setTimeout(function() {
                     if (appOpened) {
                         return;
                     }
-                    
+
                     cleanup();
                     loadingText.textContent = '앱이 설치되어 있지 않아 스토어로 이동합니다...';
                     redirectToStore(os);
                 }, trigger === 'auto' ? 2000 : 1500);
-                
+
                 if (os === 'android') {
+                    // Android Intent URL도 동적으로 생성
+                    const playStoreUrl = buildStoreUrl('android');
+                    const androidIntentUrl = `intent://treasurelink.com/#Intent;scheme=treasurelink;package=com.wb.treasure_link;S.browser_fallback_url=${encodeURIComponent(playStoreUrl)};end`;
                     window.location.href = androidIntentUrl;
                 } else {
                     window.location.href = appScheme;
