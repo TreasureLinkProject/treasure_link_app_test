@@ -124,7 +124,7 @@
 
             // App Store & Play Store URLs (기본값)
             const baseAppStoreUrl = 'https://apps.apple.com/app/treasurelink/id6746151115';
-            const basePlayStoreUrl = 'https://play.google.com/store/apps/details?id=com.wb.treasure_link';
+            const basePlayStoreUrl = 'https://play.google.com/store/apps/details?id=com.wb.treasure_link.stg';
 
     
             // URL 파라미터 파싱
@@ -285,7 +285,7 @@
                 if (os === 'android') {
                     // Android Intent URL도 동적으로 생성
                     const playStoreUrl = buildStoreUrl('android');
-                    const androidIntentUrl = `intent://treasurelink.com/#Intent;scheme=treasurelink;package=com.wb.treasure_link;S.browser_fallback_url=${encodeURIComponent(playStoreUrl)};end`;
+                    const androidIntentUrl = `intent://treasurelink.com/#Intent;scheme=treasurelink;package=com.wb.treasure_link.stg;S.browser_fallback_url=${encodeURIComponent(playStoreUrl)};end`;
                     window.location.href = androidIntentUrl;
                 } else {
                     window.location.href = appScheme;
