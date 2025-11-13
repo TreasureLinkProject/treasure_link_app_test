@@ -1,0 +1,34 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "T949RKCGTL.com.wb.treasure_link",
+        "paths": [
+          "/treasure_link_app_ad/*",
+          "/treasure_link_app_ad",
+          "/treasure_link_app/*",
+          "/treasure_link_app"
+        ]
+      },
+      {
+        "appID": "T949RKCGTL.com.wb.treasure_link.stg",
+        "paths": [
+          "/treasure_link_app_ad/*",
+          "/treasure_link_app_ad",
+          "/treasure_link_app/*",
+          "/treasure_link_app"
+        ]
+      },
+      {
+        "appID": "T949RKCGTL.com.wb.treasure_link.dev",
+        "paths": [
+          "/treasure_link_app_ad/*",
+          "/treasure_link_app_ad",
+          "/treasure_link_app/*",
+          "/treasure_link_app"
+        ]
+      }
+    ]
+  }
+}
