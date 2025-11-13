@@ -1,0 +1,38 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.wb.treasure_link",
+      "sha256_cert_fingerprints": [
+        "E0:BE:9B:A5:31:48:41:33:F2:1E:26:29:D9:8B:51:83:21:E6:5A:A3:40:46:CA:41:2E:7F:0C:12:6B:D6:75:25"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.wb.treasure_link.stg",
+      "sha256_cert_fingerprints": [
+        "BF:0A:06:E1:11:70:5B:80:14:47:BD:15:29:26:86:C2:10:9F:36:CC:ED:CA:B2:5D:33:E1:64:27:50:52:7D:24"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.wb.treasure_link.dev",
+      "sha256_cert_fingerprints": [
+        "BF:0A:06:E1:11:70:5B:80:14:47:BD:15:29:26:86:C2:10:9F:36:CC:ED:CA:B2:5D:33:E1:64:27:50:52:7D:24"
+      ]
+    }
+  }
+]
